@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jquery_hw1</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+  <button id="btnNext">다음문제</button>
+  <input type="text" id="num1">+
+  <input type="text" id="num2">=
+  <input type="text" id="result">
+  <button id="btnConfirm">결과확인</button>
+  <script>
+    //jquery
+    //btnNext 클릭하면 1~10 난수를 생성해서 num1, num2 인풋태그에 지정
+    let $num1 = $(num1);
+    let $num2 = $(num2);
+    let $result = $(result);
+    $("#btnNext").on("click", () =>{
+      $num1.val(parseInt(Math.random() * 10) + 1);
+      $num2.val(parseInt(Math.random() * 10) + 1);
+    });
+    //btnConfirm 클릭하면 두 수의 합과 result가 같은지 결과 출력(alert)
+    $("#btnConfirm").on("click", () =>{
+      if(Number($num1.val()) + Number($num2.val()) == $result.val()) alert("같음");
+      else alert("다름");
+    });
+  </script>
+</body>
+</html>

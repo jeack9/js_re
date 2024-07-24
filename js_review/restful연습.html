@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="resetBtn">초기화</button>
+  <button id="addBtn">등록</button>
+  <button id="modiBtn">수정</button>
+  <button id="delBtn">삭제</button>
+  <form name="frm">
+    userId<input type="text" name="userId" id="userId"> <br>
+    id<input type="text" name="id" id="id"> <br>
+    title<input type="text" name="title" id="title"> <br>
+    completed<input type="text" name="completed" id="completed"> <br>
+  </form>
+  <div id="divTodos"></div>
+  <script>
+    // 목록조회 : title 출력
+    let url = `https://jsonplaceholder.typicode.com/todos`;
+    fetch(url)
+    .then(result => result.json())
+    .then(result => {
+      result.forEach(todos => {
+        // console.log(todos.title);
+        let newTag = `<div>${todos.title}<button data-id="${todos.id}">조회</button></div>`;
+        divTodos.insertAdjacentHTML("beforeEnd", newTag);
+      });
+    })
+    .catch(err => console.log(err));
+
+    // 단건조회
+    divTodos.addEventListener("click", function(){
+      if(event.target.tagName == "BUTTON"){
+        let id = event.target.dataset.id;
+        fetch(`${url}/${id}`)
+          .then(result => result.json())
+          .then(result => {
+            userId.value = result.userId;
+            document.querySelector("input[name=id]").value = result.id;
+            title.value = result.title;
+            completed.value = result.completed;
+          })
+          .catch(err => console.log(err));
+      }
+    });
+
+    // 초기화
+    resetBtn.addEventListener("click", () => {
+      document.frm.reset();
+    });
+    
+    // 등록 : post
+    addBtn.addEventListener("click", () => {
+      console.log("등록시작");
+      let param = {userId: userId.value, title: title.value, completed: completed.value};
+      fetch(url,  {
+        method: "POST", // 또는 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(param)
+      })
+        .then(result => result.json())
+        .then(todos => {
+          let newTag = `<div>${todos.title}<button data-id="${todos.id}">조회</button></div>`;
+          divTodos.insertAdjacentHTML("afterbegin", newTag);
+        })
+        .catch(err => console.log(err));
+    });
+
+    // 수정
+  
+    // 삭제
+  </script>
+</body>
+</html>

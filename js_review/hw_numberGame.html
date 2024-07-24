@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>numberGame</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <style>
+    .fail{
+      background-color: red;
+      color: #fff;
+    }
+    .success{
+      background-color: green;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h3>숫자 게임</h3>
+  <p>1 ~ 100 사이 숫자 추측해라</p>
+  <label for="guess">숫자 입력: </label><input type="number" id="guess"><button id="submitBtn">제출</button>
+  <p id="prevGuess">이전 입력 수: 3 </p>
+  <p id="msgBody" class="success">아님</p>
+  <p id="hintMsg">추측한 수가 높다</p>
+  <button id="restartBtn">재시작</button>
+  <script>
+     let n = 0;
+     let guessNums = [];
+     init();
+    // 난수 발생 -> 추측시작(기회 10번) -> 힌트메시지 출력
+    function init(){
+      n = parseInt(Math.random() * 100) + 1;
+      guessNums = [];
+      guess.disabled = false;
+      submitBtn.disabled = false;
+      $(prevGuess).hide();
+      $(msgBody).hide();
+      $(restartBtn).hide();
+      $(hintMsg).hide();
+      $(guess).val("");
+      $(guess).focus();
+    }
+
+    // 재시작 버튼이벤트
+    $(restartBtn).on("click", () =>{
+      init();
+    });
+    
+    // 숫자추측 엔터이벤트
+    guess.addEventListener("keypress", ()=>{
+      if(event.keyCode == 13) submitBtn.click();
+    });
+
+    // 숫자추측 버튼이벤트
+    $(submitBtn).on("click", () => {
+      let $guess = $(guess);
+      if(!$guess.val()){
+        alert("숫자를 입력하세요.");
+        return;
+      }
+      
+      // 입력한 숫자와 난수 비교
+      let guessVal = Number($guess.val());
+      guessNums.push(guessVal);
+      console.log(n);
+      $(prevGuess).show();
+      if(guessVal == n){
+        $(msgBody).addClass("success");
+        $(msgBody).removeClass("fail");
+        $(hintMsg).hide();
+        $(msgBody).text("성공!");
+        $(restartBtn).show();
+        endGame();
+      }else{
+        $(msgBody).addClass("fail");
+        $(msgBody).removeClass("success");
+        $(msgBody).show();
+        $(hintMsg).show();
+        $(prevGuess).text("이전 입력 수: " + guessNums);
+        if(guessVal > n){
+          $(hintMsg).text("추측한 수보다 작습니다.");
+        }else{
+          $(hintMsg).text("추측한 수보다 큽니다.");
+        }
+      }
+      $guess.val("");
+      $(guess).focus();
+      
+      if(guessNums.length == 10){ // 기회 10번
+        endGame();
+        $(msgBody).text("게임오버!!");
+        $(msgBody).addClass("fail");
+        $(msgBody).removeClass("success");
+        $(hintMsg).hide();
+        return;
+      }
+    });
+
+    function endGame(){//입력필드, 버튼 비활성화
+      guess.disabled = true;
+      submitBtn.disabled = true;
+      $(restartBtn).show();
+    }
+  </script>
+</body>
+</html>

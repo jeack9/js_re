@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test5_traverse</title>
+</head>
+<body>
+  <div id="divFruit" data-group="fruit">
+    <div class="child" data-name="apple"><span>사과</span><button data-no="f1">선택</button></div>
+    <div class="child" data-name="banana"><span>바나나</span><button data-no="f2">선택</button></div>
+    <div class="child" data-name="grape"><span>포도</span><button data-no="f3">선택</button></div>
+  </div>
+  <script>
+      divFruit.addEventListener("click", () => {
+      // alert(event.target.tagName);
+      if(window.event.target.tagName == "BUTTON"){
+        // alert(`${event.target.dataset.no} click!`);
+        // console.log(event.target.previousElementSibling.innerText);
+        console.log(event.target.closest("div#divFruit").dataset.group);
+        console.log(event.target.parentElement.dataset.name);
+      } 
+    });
+  </script>
+</body>
+</html>

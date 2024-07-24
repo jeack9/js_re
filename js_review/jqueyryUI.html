@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jqueyryUI</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion" ).accordion({
+      collapsible: true,
+      active: 0,
+      header: "> div > h3",
+      heightStyle: "content",
+      animate: {easing: "swing", duration: 2000},
+      activate: function( event, ui ) {
+        console.log(ui.newHeader.data("code"));
+        console.log(ui.newPanel.html());
+        let code = ui.newHeader.data("code");
+        if(code == "j2"){
+          ui.newPanel.load("jquery1_selector.html");
+        }else if(code == "j3"){
+          ui.newPanel.load("jquery2_event.html");
+        }
+      }
+    })
+    .sortable({
+      axis: "y",
+      handle: "h3",
+      stop: function( event, ui ) {
+        // IE doesn't register the blur when sorting
+        // so trigger focusout handlers to remove .ui-state-focus
+        ui.item.children( "h3" ).triggerHandler( "focusout" );
+
+        // Refresh accordion to handle new order
+        $( this ).accordion( "refresh" );
+      }
+    }); // END $( "#accordion" ).accordion();
+
+    //datapicker
+    $("#hireDt").datepicker({
+      minDate: "-7", 
+      maxDate: "+2w",
+      dateFormat: "yy-mm-dd",
+      dayNamesMin: [ "일", "월", "화", "수", "목", "금", "토" ],
+      onSelect: function(dateStr, dateObj){
+        console.log(dateStr);
+        console.log(dateObj);
+        $("div.group > div > div:last-child").html(dateObj.selectedDay);
+      }
+    });
+
+    //dialog
+    let dialog = $("#dialog-form").dialog({
+      autoOpen: false,
+      modal: true,
+      // show: {duration: 1000, effect: "shake"},
+      buttons: {
+        "저장" : function(){
+          console.log("저장");
+        },
+        "취소": function(){
+          dialog.dialog("close");
+        }
+      },
+      open: function(e){
+        console.log($(event.target).text());
+        console.log($(e.target).text());
+      },
+      close: function(){
+        document.frmModal.reset();
+      }
+    });
+    $(".btnOpenModal").button().on( "click", function() {
+      dialog.dialog("open");
+    });
+  }); // END $( function()
+  </script>
+</head>
+<body>
+  <div id="accordion">
+    <div class="group">
+      <h3 data-code="j1">Section 1</h3>
+      <div>
+        <input id="hireDt">
+        <div></div>
+        <button class="btnOpenModal">모달창</button>
+        <div class="btnOpenModal">user1</div>
+        <div class="btnOpenModal">user2</div>
+      </div>
+    </div>
+    <div class="group">
+      <h3 data-code="j2">Section 2</h3>
+      <div>
+        <p>b</p>
+      </div>
+    </div>
+    <div class="group">
+      <h3 data-code="j3">Section 3</h3>
+      <div>
+        <p>Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis. Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui. </p>
+      </div>
+    </div>
+    <div class="group">
+      <h3>Section 4</h3>
+      <div>
+        <p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+      </div>
+    </div>
+  </div><!-- END div#accordion -->
+  <div id="dialog-form" title="Create new user">
+    <p class="validateTips">All form fields are required.</p>
+   
+    <form name="frmModal">
+      <fieldset>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email" class="text ui-widget-content ui-corner-all">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">
+   
+        <!-- Allow form submission with keyboard without duplicating the dialog button -->
+        <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+      </fieldset>
+    </form>
+  </div>
+</body>
+</html>

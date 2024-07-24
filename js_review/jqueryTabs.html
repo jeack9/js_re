@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jqueryTabs</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+</head>
+<script>
+   $( function() {
+    $( "#tabs" ).tabs();
+  } );
+</script>
+<body>
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">첫번째</a></li>
+      <li><a href="jquery1_selector.html">Tab 1</a></li>
+      <li><a href="jquery2_event.html">Tab 2</a></li>
+      <li><a href="jquery4_each_homework.html">Tab 3</a></li>
+    </ul>
+    <div id="tabs-1">
+      1번패널
+    </div>
+  </div>
+</body>
+</html>

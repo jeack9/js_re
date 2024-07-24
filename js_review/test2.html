@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .active{
+      background-color: yellowgreen;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="txtWord"><button type="button" id="btnAdd" onclick="addPtag(this)">추가</button>
+  <div id="divwords">
+    <p class="word">list</p>
+    <p class="word">nice</p>
+    <p class="word">good</p>
+    <p class="word">very</p>
+  </div>
+  <script>
+    // p태그를 클릭하면 배경색 변경
+    let words = document.querySelectorAll(".word");
+    words.forEach(word => {
+      word.addEventListener("click", (e) =>{
+        // e.target.style.backgroundColor = "#ccc";
+        e.target.classList.toggle("active");
+      });
+    });
+    // 추가버튼 클릭하면 input 태그의 값을 p태그 만들어서 추가
+    function addPtag(){
+      let input = document.querySelector("input");
+      // let p = words[0].cloneNode();
+      // p.innerHTML = input.value;      
+      // document.querySelector("#btnAdd").insertAdjacentElement("afterend", p);
+
+      let newTag = `<p class="word">${txtWord.value}</p>`;
+      divwords.insertAdjacentHTML("beforeend", newTag);
+
+      input.value = "";
+      input.focus();
+    }
+
+    // input 태그에 엔터키 이벤트 (13)
+    document.querySelector("input").addEventListener("keypress", (e) => {
+      if(e.keyCode == 13){
+        document.querySelector("#btnAdd").click();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .active{
+      background-color: yellowgreen;
+    }
+  </style>
+</head>
+<body>
+  <!-- 그룹이벤트(이벤트위임) 이벤트전파 이용-->
+  <div id="divwords">
+    <div>그룹 이벤트 없음</div>
+    <p class="word active">list</p>
+    <p class="word">nice</p>
+    <p class="word">good</p>
+    <p class="word">very</p>
+  </div>
+  <script>
+    divwords.addEventListener("click", () => {
+      // if(event.target.className == "word") event.target.classList.toggle("active");
+      if(event.target.classList.contains("word")) event.target.classList.toggle("active");
+    });
+  </script>
+</body>
+</html>

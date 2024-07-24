@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <input type="checkbox" id="test1" checked="checked"> test1
+  <input type="checkbox" id="test2"> test2 <br>
+  <div class="testlog"></div>
+
+  <script>
+    $("input:checkbox").change("on", function() {
+      $("div.testlog").html("<br/> check1 .attr('checked') : " + $("#test1").attr("checked") +
+          "<br/> check2 .attr('checked') : " + $("#test2").attr("checked")
+          + "<br/> check2 .prop('checked') : " + $("#test2").prop("checked")
+          + "<br/> check2 .is(':checked') : " + $("#test2").is(":checked")
+          + "<br/> check1 .prop('checked') : " + $("#test1").prop("checked")
+          + "<br/> check1 .is(':checked') : " + $("#test1").is(":checked")
+      );
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .active{
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="txtDt" value="20240717"><button type="button" id="btnDt">조회</button>
+  <table style="border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>순위</th>
+        <th>제목</th>
+        <th>개봉일자</th>
+        <th>선택</th>
+      </tr>
+    </thead>
+    <tbody id="result"></tbody>
+  </table>
+  <div id="info">
+    <table style="border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>제목</th>
+        <th>감독</th>
+        <th>배우</th>
+      </tr>
+    </thead>
+    <tbody id="infoBody"></tbody>
+  </table>
+  </div>
+  <script>
+    // -------------------------
+    // 조회버튼 이벤트 핸들러
+    // -------------------------
+    btnDt.addEventListener("click", () => {
+      let url = `https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=${txtDt.value}`;
+      fetch(url)
+        .then(result => result.json())
+        .then(movieList => movieListHandler(movieList))
+        .catch(err => console.log(err));      
+    })
+
+    // -------------------------
+    // 조회결과 처리
+    // -------------------------
+    function movieListHandler(movieList){ // 영화목록 view에 출력
+      let list = movieList.boxOfficeResult.dailyBoxOfficeList;
+      
+      result.innerHTML = "";
+      list.forEach(movie => {
+        // console.log(movie.movieNm);
+        let newTr = `<tr data-cd="${movie.movieCd}"> 
+                      <td>${movie.rank}</td>
+                      <td>${movie.movieNm}</td>
+                      <td>${movie.openDt}</td>
+                      <td><button type="button">선택</button></td>
+                    </tr>`;
+        result.insertAdjacentHTML("beforeEnd", newTr);
+      });
+
+      // -------------------------
+      // 선택버튼 핸들러
+      // -------------------------
+      result.addEventListener("click", () => {
+        if(event.target.tagName == "BUTTON"){
+          console.log(event.target.closest("tr").dataset.cd);
+          let cd = event.target.closest("tr").dataset.cd;
+          let url = `https://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=f5eef3421c602c6cb7ea224104795888&movieCd=${cd}`;
+          fetch(url)
+            .then(result => result.json())
+            .then(result => {
+              console.log(result);
+              let movieInfo = result.movieInfoResult.movieInfo;
+              // 배우 이름 나열
+              let names = ``;
+              movieInfo.actors.forEach(actors => {
+                names += `${actors.peopleNm}  `;
+              });
+              // 영화상세 정보 -> 첫번째 감독, 출연배우 정보 div#info에 출력
+              let newTr = `<tr data-cd="${movieInfo.movieCd}"> 
+                            <td>${movieInfo.movieNm}</td>
+                            <td>${movieInfo.directors[0].peopleNm}</td>
+                            <td>${names}</td>
+                          </tr>`;
+              infoBody.innerHTML = "";
+              infoBody.insertAdjacentHTML("beforeEnd", newTr);
+            })
+            .catch(err => console.log(err));
+        }
+      });
+    }
+
+  </script>
+</body>
+</html>

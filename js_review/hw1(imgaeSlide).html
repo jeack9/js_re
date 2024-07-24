@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hw1(imgaeSlide)</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1>이미지 슬라이더</h1>
+  <button>◀</button>
+  <img src="img/basic.jpg" alt="" width="300" height="150">
+  <button>></button>
+  <script>
+    let idx = 0;
+    let arr = [
+      "img/basic.jpg",
+      "img/mono.png",
+      "img/totoro.jpg",
+      "img/modric.jpg"];
+    $("button").on("click", function(){
+      if($(event.target).text() == "◀"){
+        if(idx == 0) idx = arr.length - 1; // 첫번째 사진 -> 마지막 사진
+        else idx--;
+        $("img").prop("src", arr[idx]);
+      }else{
+        if(idx == arr.length - 1) idx = 0; // 마지막 사진 -> 첫번째 사진
+        else idx++;
+        $("img").prop("src", arr[idx]);
+      }
+    });
+    
+  </script>
+</body>
+</html>

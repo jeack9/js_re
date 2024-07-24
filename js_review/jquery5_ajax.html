@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jquery5_ajax</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <button id="resetBtn">초기화</button>
+  <button id="addBtn">등록</button>
+  <button id="modiBtn">수정</button>
+  <button id="delBtn">삭제</button>
+  <form name="frm">
+    userId<input type="text" name="userId" id="userId"> <br>
+    id<input type="text" name="id" id="id"> <br>
+    title<input type="text" name="title" id="title"> <br>
+    completed<input type="text" name="completed" id="completed"> <br>
+  </form>
+  <div id="divTodos"></div>
+  <script>
+    let url = `https://jsonplaceholder.typicode.com/todos`;
+    $.ajax(url).then(data => {
+      data.forEach(todo => {
+        $("div#divTodos").append(`${todo.title}<br>`);
+      });
+    });
+
+    $("#addBtn").on("click", function(){
+      $.ajax(url, {
+        async: false, // 동기식
+        method: "post", 
+        contentType: "application/json",
+        data: JSON.stringify({
+          title: title.value, 
+          userId: userId.value,
+          completed: completed.value
+        }),
+        success : function() {},
+        error : function() {}
+      })
+      .then(data => {
+        $("#divTodos").prepend(data.title + "<br>");
+      });
+    });
+  </script>
+</body>
+</html>
