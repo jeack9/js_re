@@ -2,10 +2,20 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req,res) => {
+  // 쿼리스트링
   const page = req.query.page;
   const search = req.query.search;
-  const params = req.query;
-  res.send(`get user : (query) ${page}, ${search} `);
+  const data = req.query;
+  // 세션
+  const email = req.session.email;
+
+  // 쿠키 읽기
+  console.log(req.cookies.cart);
+
+  // 쿠키 저장
+  res.cookie("email", email, {expires: new Date(Date.now() + 15000)});
+
+  res.send(`get user : (query) ${page}, ${search} , (session): ${email}`);
 });
 
 router.get("/:username", (req, res) => {

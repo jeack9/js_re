@@ -1,0 +1,16 @@
+commonJS module                          es module
+				  package.json => type:"module"
+export
+---------------------
+function ma(){}                      
+function mb(){}                      
+
+module.exports = ma
+module.exports = {ma, mb}                  export { ma, mb }
+
+                                                    export function ma(){}
+                                                    export default function mb(){}
+import 
+---------------------
+let ma = require('./mymodule.js')           import  ma from ''./mymodule.js''
+let {ma, mb} = require('./mymodule.js')    import  mb, {ma} from ''./mymodule.js''

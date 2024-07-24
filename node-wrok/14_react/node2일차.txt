@@ -1,0 +1,100 @@
+## 명령행 인수
+
+> node aaa.js 10 20 30  
+   process.argv
+   process.env
+
+
+> java 클래스명 10 20
+
+
+class 클래스명 {
+  public static void main(String[] argv){
+	System.getEnv()
+	System.exit()
+  }
+}
+
+## 파일 
+node : fs
+java : new File()
+
+
+## was 와 web server 차이
+
+
+
+
+---------------------------------------
+problem1
+  readFile() -> charset를 생략한 경우
+
+
+2일차 정리
+---------------------------------------
+node : 자바스크립트 실행환경
+	  -> 예시 : 웹서버구축
+		http모듈  -> express 프레임워크
+                servlet  -> spring 프레임워크
+
+npm                    ( <== maven )
+  package.json           pom.xml
+	- 프로젝트 정보
+	- 설치된 패키지 정보
+          dependency
+        - 스크립트 명령어
+
+  npm install   <-- package.json에 있는 모든 패키지 설치
+  npm install 패키지명
+  npm uninstall 패키지명
+  npm update 패키지명
+  npm ls
+
+내장모듈
+    fs                   ( <--- File(java) ) 
+    process(argv, env)   ( <--- System(java) )  
+    url                  ( <--- URL(java) ) 
+    http                 ( tomcat/jboss/rejin  ....)
+
+외장모듈
+    npm으로 패키지 설치 후에 사용 가능
+    - axios, express ...
+
+실습
+1. axios_test 폴더생성   : mkdir
+2. package.json 파일생성  : npm init
+3. axios 패키지 설치       : npm install axios  
+4. index.js 파일 생성 : fetch 함수를 axios 함수로 코딩 : 
+ require()
+ axios.get(   )
+      .then( result =>  result.data )
+
+     fetch('https://jsonplaceholder.typicode.com/todos/1')
+           .then(response => response.json())
+           .then(json => console.log(json))
+5. node index.js
+
+------------------------------------
+용어 숙제
+1. was   vs  web server
+2. library  vs  framework
+3. jsp교재 -> 내장객체( request, response, session, cookie)
+4. cors          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
