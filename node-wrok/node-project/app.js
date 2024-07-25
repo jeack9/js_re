@@ -1,7 +1,8 @@
 const express = require("express");
 const userRouter = require("./routes/users");
-const productRouter = require("./routes/product");
+const productRouter = require("./routes/product2");
 const loginRotuer = require("./routes/login");
+const customerRouter = require("./routes/customer2");
 const cors = require("cors");
 const morgan = require("morgan");
 // 업로드
@@ -44,9 +45,16 @@ app.post("/upload", upload.single('profile'), (req, res) => {
   res.send(`uploaded!! ${originalName}, ${filename}`);
 });
 
+app.get("/", (req, res) => {
+  res.send("hello!");
+});
+
 app.use("/member", userRouter);
 app.use("/product", productRouter);
 app.use("/", loginRotuer);
+app.use("/customer", customerRouter);
+
+// 에러페이지
 
 app.listen(port, () => {
   console.log(`server running!! http://localhost:${port}`);

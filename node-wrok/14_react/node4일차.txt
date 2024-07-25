@@ -1,0 +1,74 @@
+1. 테이블 생성
+product   테이블
+	prodnum  	int  pk nn ai         --상품번호
+	prodname 	varchar(100) nn       --상품명
+	description     varchar(100)          --설명
+	price    	int                   --가격
+	cate	 	varchar(10)           --분류
+
+2. 데이터 2건 등록
+
+3. mysql / product_sql.js
+	CRUD 쿼리
+
+4. routes / product.js 수정
+
+5. 부메랑에서 테스트
+
+----------------------
+실행순서
+----------------------
+1. 프로젝트 생성  - 게시판
+> mkdir homework
+> cd homework
+> npm init
+
+2. 패키지 설치
+> npm install mysql2
+> npm install express
+     package.json 복사하고 npm install
+
+3.app.js
+  const app = express();
+  app.use();      //미들웨어 : body-parser, json, 라우터 등록
+  app.listener()
+
+4. mysql 폴더 / pool.js  <--  connection pool 생성, db쿼리 실행함수
+
+5. mysql 폴더 / board.js    <--  sql쿼리    mybatis.xml
+  - pool.js에 등록
+	const boardsql = require("./board");
+	const sql = { ...boardsql , ...productsql };
+
+6. routes폴더 / board.js    <--  라우팅      command핸들러
+	app.js 파일에 라우터 등록
+	app.use("/board", boardRouter);
+
+7. 부메랑 테스트
+
+----------------------
+테이블 구조
+----------------------
+board : seq,       --게시글번호
+        title,     --제목
+        content,   --내용 
+        wdt,       --작성일시       <--default value, now()
+        writer     --작성자
+
+----------------------
+프로젝트 파일 구조
+----------------------
+homework
+	mysql
+		pool.js
+		board.js
+	routes
+		board.js
+	app.js
+	package.json
+
+
+
+
+
+
