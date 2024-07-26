@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>customer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="row mt-5">
+      <div class="col-lg-7 col-md-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>이름</th>
+              <th>이메일</th>
+              <th>전화번호</th>
+              <th>주소</th>
+            </tr>
+          </thead>
+          <tbody id="listBody"></tbody>
+        </table>
+        <!-- pagenation -->
+        <nav aria-label="..."> 
+          <ul class="pagination">
+            <li class="page-item disabled">
+              <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav><!-- END pagenation -->
+      </div><!-- div.col -->      
+      <div class="col-lg-5 col-md-12">
+        <form name="customerfrm">
+        <div class="al">
+          <button class="btn btn-info">초기화</button>
+          <button class="btn btn-success" id="addBtn">저장</button>
+          <button class="btn btn-danger">삭제</button>
+        </div>
+          <div class="mb-3">
+            <label for="id" class="form-label">번호: </label>
+            <input type="text" class="form-control" id="id" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">이름: </label>
+            <input type="text" class="form-control" id="name" placeholder="육룡">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">이메일: </label>
+            <input type="email" class="form-control" id="email" placeholder="aa@google.com">
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">전화번호: </label>
+            <input type="text" class="form-control" id="phone" placeholder="01088887777">
+          </div>
+          <div class="mb-3">
+            <label for="addr" class="form-label">주소: </label>
+            <input type="text" class="form-control" id="addr" placeholder="판교로 335">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="common.js"></script>
+  <script>
+    // paging
+
+    const url = `http://localhost:3000/customer`;
+    customerList();
+    // 전체조회 ajax호출
+    function customerList(page = 1){      
+      let reqUrl = `${url}?page=${page}`;
+      axios.get(reqUrl).then(result => {      
+        console.log(result.data);
+        customerListCallBack(result.data);
+      });
+    }    
+    // 전체조회 콜백
+    function customerListCallBack(data){
+      $("#listBody").html("");
+      $(data).each((idx, item) =>{
+        let tr = `<tr data-id=${item.id}>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.email}</td>
+                    <td>${item.phone}</td>
+                    <td>${item.address}</td>
+                  </tr>`;
+        $("#listBody").append(tr);
+      });
+    }
+
+    // 등록/수정 이벤트
+    $("#addBtn").on("click", () => {
+      let reqBody = {
+        name: $("#name").val(),
+        email: $("#email").val(),
+        phone: $("#phone").val(),
+        address: $("#addr").val()
+      };      
+      if(!$("#id").val()) 
+        addCustomer(reqBody);
+      else 
+        modiCustomer(reqBody);
+    });
+
+    // 등록 ajax 호출
+    async function addCustomer(reqBody){
+      let reqUrl = `${url}`; 
+      const response = await axios.post(reqUrl, reqBody);
+      $("button.btn-info").trigger("click");
+      $("#name").focus();
+      customerList();
+    }
+    // 수정 ajax 호출
+    async function modiCustomer(reqBody){
+      let id = $("#id").val();
+      let reqUrl = `${url}/${id}`;
+      const response = await axios.put(reqUrl, reqBody);
+      reqBody.id = id; // view 콜백함수에 id 값 전달
+      modiCustomerCallBack(reqBody); // view 변경
+      $("button.btn-info").trigger("click");
+    }
+    // 수정된 내용 view replace
+    function modiCustomerCallBack(item){
+      let tr = `<tr data-id=${item.id}>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.email}</td>
+                    <td>${item.phone}</td>
+                    <td>${item.address}</td>
+                </tr>`;
+      $(`tr[data-id='${item.id}']`).replaceWith(tr);
+    }
+
+    // 단건 조회 ajax 호출
+    $(listBody).on("click", "tr", async () => {
+      let id = $(event.target).closest("tr").children().first().text(); // 조회할 아이디값
+      let reqUrl = `${url}/${id}`;
+      const response = await axios.get(reqUrl);
+      const customer = response.data[0];
+      // form 값 변경      
+      customerGetCallback(customer);
+    });
+    // 단건 조회 콜백
+    function customerGetCallback(data){
+      fieldSet(data);
+    }
+
+    // 삭제 ajax 호출
+    $("button.btn-danger").on("click", async () => {
+      console.log("dd");
+      let id = $("input#id").val(); // 조회할 아이디값
+      // 삭제 데이터 확인
+      if(!id){
+        alert("삭제할 데이터 선택하세요.");
+        return;
+      }
+      let reqUrl = `${url}/${id}`;
+      // 삭제여부 확인
+      if(!confirm("삭제하겠습니까?")){
+        return;
+      }
+      const response = await axios.delete(reqUrl);
+      if(response.data.affectedRows == 1){ // 삭제 성공
+        alert(`${id} 데이터 삭제되었습니다.`);
+        $("button.btn-info").click();
+        customerList();
+      }else{ // 삭제 실패
+        alert(`${id} 삭제 실패.`);
+      }
+    });
+
+    // form 초기화 버튼이벤트
+    $("button.btn-info").on("click", () => {
+      document.customerfrm.reset();
+    });
+  </script>
+</body>
+</html>

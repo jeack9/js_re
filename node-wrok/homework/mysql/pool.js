@@ -8,7 +8,7 @@ const conn =
   user: "hr",
   password: "hr",
   database: "shop",
-  connectionLimit: 10  
+  connectionLimit: 10
 };
 
 // 커넥션 풀 생성

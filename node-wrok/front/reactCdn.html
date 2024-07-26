@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <div id="root"></div>
+    <script type="text/babel">
+      const name = "save";
+      const imageSrc = "basic.jpg";
+      const products = [
+        { title: "Cabbage", isFruit: false, id: 1 },
+        { title: "Garlic", isFruit: false, id: 2 },
+        { title: "Apple", isFruit: true, id: 3 },
+      ];
+      function Customer() {
+        let [data, setData] = React.useState([]);
+        React.useEffect(async () => {
+          let result = await fetch("http://localhost:3000/customer");
+          let customerData = await result.json();
+          setData(customerData);
+        }, []);
+        function addCustomer() {
+          setData([...data, { id: 9, name: "test", email: "mail" }]);
+        }
+        return (
+          <div>
+            <button onClick={addCustomer}>추가</button>
+            <table>
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>이름</th>
+                  <th>이메일</th>
+                  <th>전화번호</th>
+                  <th>주소</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((customer) => {
+                  return (
+                    <tr data-id={customer.id} key={customer.id}>
+                      <td>{customer.id}</td>
+                      <td>{customer.name}</td>
+                      <td>{customer.email}</td>
+                      <td>{customer.phone}</td>
+                      <td>{customer.address}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+
+      function MyButton() {
+        function handleClick() {
+          alert("클릭");
+        }
+        return (
+          <button className="btn" onClick={handleClick}>
+            {name}
+          </button>
+        );
+      }
+      function MyImage() {
+        return <img src={imageSrc}></img>;
+      }
+      const element = (
+        <div>
+          <h1>Hello, world!</h1>
+          <Customer />
+        </div>
+      );
+      const domContainer = document.querySelector("#root");
+      const root = ReactDOM.createRoot(domContainer);
+      root.render(element);
+    </script>
+  </body>
+</html>
