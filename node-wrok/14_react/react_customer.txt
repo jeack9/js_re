@@ -1,0 +1,27 @@
+function Customer() {
+        let [data, setData] = React.useState([]);
+        React.useEffect(async () => {
+          let result = await fetch("http://localhost:3000/customer");
+          let customerData = await result.json();
+          setData(customerData);
+        }, []);
+        function addCustomer() {
+          setData([...data, { id: 1, name: "choi" }]);
+        }
+        return (
+          <div>
+            <button onClick={addCustomer}>추가</button>
+            <table>
+              {data.map((element) => (
+                <tr key={element.id}>
+                  <td>{element.id}</td>
+                  <td>{element.name}</td>
+                  <td>{element.email}</td>
+                  <td>{element.phone}</td>
+                  <td>{element.address}</td>
+                </tr>
+              ))}
+            </table>
+          </div>
+        );
+      } 
