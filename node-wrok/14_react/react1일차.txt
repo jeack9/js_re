@@ -1,0 +1,66 @@
+생성
+	cd ..
+	npx create-react-app tictactoc
+	cd 프로젝터(폴더명)
+	npm start   
+
+수정
+	index.js   
+	index.html
+        app.js  -->  Square 컴포넌트, Board 컴포넌트, 
+        app.css
+
+배포
+	npm build
+	build
+		index.html  <--- SPA
+		js/,        <--- 웹팩
+		css/
+
+       운영서버에 옮기기 
+       serve -s build	  <-- 비교 (==톰캣서버 시작)
+
+
+
+props
+
+객체분해
+  props = { title :'aa', alt;'bb'} 
+  arg = props
+  
+  {title ,alt}  =  { title :'aa', alt;'bb'} 
+ 
+
+
+
+Replys.js 생성
+
+export default function Replys( ____ ){
+
+ <div>
+	<span>1</span>
+	<span>title</span>
+	<span>홍길동</span>
+<div>
+
+}
+
+
+
+condition.js
+  import Replys from './Replys'
+
+
+
+
+
+과제
+1. React로 사고하기
+
+
+
+
+
+
+
+
