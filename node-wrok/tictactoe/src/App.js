@@ -1,5 +1,5 @@
 import "./App.css";
-import Board from "./tictacto"
+import Board from "./Tictactoe";
 function App() {
   return (
     <div className="App">
