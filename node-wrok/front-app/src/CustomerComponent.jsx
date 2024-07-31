@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CustomerForm from "./CustomerForm";
 import CustomerList from "./CustomerList";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function CustomerComponent() {
@@ -12,11 +12,13 @@ export default function CustomerComponent() {
     <Container>
       <Row>
         <Col>
-          <CustomerList
-            onClick={(_id) => {
-              setID(_id);
-            }}
-          ></CustomerList>
+          <Card>
+            <CustomerList
+              onClick={(_id) => {
+                setID(_id);
+              }}
+            ></CustomerList>
+          </Card>
         </Col>
         <Col className="">
           <CustomerForm id={id}></CustomerForm>

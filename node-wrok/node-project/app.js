@@ -3,6 +3,7 @@ const userRouter = require("./routes/users");
 const productRouter = require("./routes/product2");
 const loginRotuer = require("./routes/login");
 const customerRouter = require("./routes/customer2");
+const boardRouter = require("./routes/board");
 const cors = require("cors");
 const morgan = require("morgan");
 // 업로드
@@ -53,6 +54,7 @@ app.use("/member", userRouter);
 app.use("/product", productRouter);
 app.use("/", loginRotuer);
 app.use("/customer", customerRouter);
+app.use("/board", boardRouter);
 
 // 에러페이지
 
