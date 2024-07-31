@@ -8,7 +8,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 function Board({isTurnX, squares, onPlay}) {
-  function handleClick(i) {    
+  function handleClick(i) {
     // 중복 위치 방지 || 승자확인
     if (squares[i] || calculateWinner(squares)) {
       return;

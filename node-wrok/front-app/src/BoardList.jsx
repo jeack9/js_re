@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import BoardInfo from "./BoardInfo";
-
 export default function BoardList() {
   // 사용자목록 데이터 state
   const [list, setList] = useState([]);
@@ -12,13 +11,14 @@ export default function BoardList() {
   const p_page = search.get("page");
   const page = p_page === null ? 1 : Number(p_page);
 
-  const [pageDTO, setPageDTO] = useState();
+  const [pageDTO, setPageDTO] = useState({ endPage: 3 });
 
-  // 보드전체조회 => 조회정보 state에 저장
+  // 보드전체조회 paging => 조회정보 state에 저장
   async function callAPI(_page) {
     const result = await axios.get(`http://localhost/board?page=${_page}`);
     setList(result.data.list);
-    setPageDTO({ endPage: Math.ceil(result.data.total / 10) });
+    setPageDTO(result.data.dto);
+    console.log(result.data.dto);
   }
   // 렌더링 이후 데이터베이스 1회만 요청
   useEffect(() => {
@@ -45,7 +45,9 @@ export default function BoardList() {
               <tr key={board.board_no}>
                 <td>{board.board_no}</td>
                 <td>
-                  <NavLink to={`/board/${board.board_no}`}>{board.title}</NavLink>
+                  <NavLink to={`/board/${board.board_no}`}>
+                    {board.title}
+                  </NavLink>
                 </td>
                 <td>{board.content}</td>
                 <td>{board.writer}</td>
@@ -55,7 +57,28 @@ export default function BoardList() {
           })}
         </tbody>
       </Table>
-      <Link to={"/board?page=2"}>2</Link>
+      <div>
+        {pageDTO.prev ? (
+          <Link to={`/board?page=${pageDTO.startPage - 1}`}>{"<<"}</Link>
+        ) : null}
+        {Array.from(
+          { length: pageDTO.endPage - pageDTO.startPage + 1 },
+          (v, i) => i + pageDTO.startPage
+        ).map((page) => {
+          return (
+            <Link
+              key={page}
+              to={`/board?page=${page}`}
+              className={pageDTO.page == page ? "active" : null}
+            >
+              {page}
+            </Link>
+          );
+        })}
+        {pageDTO.next ? (
+          <Link to={`/board?page=${pageDTO.endPage + 1}`}>{">>"}</Link>
+        ) : null}
+      </div>
       <Routes>
         <Route path="/:boardNo" element={<BoardInfo />}></Route>
       </Routes>

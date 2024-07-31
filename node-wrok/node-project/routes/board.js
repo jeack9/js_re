@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("../mysql/pool");
+const pageDTO = require("../mysql/pageDTO");
 
 // 전체 조회
 // router.get("/", (req, res) => {
@@ -19,7 +20,8 @@ router.get("/", async (req, res) => {
   let list = await mysql.query("board", "boardList", offset);
   let total = await mysql.query("board", "boardCount");
   // res.send(list);
-  res.send({ list, total: total[0] });
+  let dto = new pageDTO(page, total[0].cnt);
+  res.send({ list, dto });
 });
 
 // 단건 조회
