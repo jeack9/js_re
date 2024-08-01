@@ -5,8 +5,8 @@ import axios from "axios";
 export default function BoardUpdate() {
   const navigater = useNavigate();
   const { boardNo } = useParams(); //==> {boardNo: 3}
-  const [form, setForm] = useState({ title: "", writer: "", content: "" });
-  const { title, writer, content } = form;
+  const [form, setForm] = useState({ title: "", writer: "", content: "", wdt: "" });
+  const { title, writer, content, wdt } = form;
 
   const callAPI = async (_boardNo) => {
     const result = await axios.get(`http://localhost/board/${_boardNo}`);
@@ -34,7 +34,14 @@ export default function BoardUpdate() {
       return;
     }
     if (window.confirm("수정하시겠습니까?")) {
-      const result = await axios.put(`http://localhost/board/${boardNo}`, form);
+      const { title, writer, content } = form;
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = ("0" + (today.getMonth() + 1)).slice(-2);
+      let day = ("0" + today.getDate()).slice(-2);
+      let wdt = year + "-" + month + "-" + day;
+      // setForm({ title, writer, content, wdt });
+      const result = await axios.put(`http://localhost/board/${boardNo}`, { title, writer, content });
       // console.log("result", result);
       navigater("/board");
     }
@@ -58,6 +65,10 @@ export default function BoardUpdate() {
       <Form.Group className="mb-3" controlId="formGroupContent">
         <Form.Label>내용</Form.Label>
         <Form.Control as="textarea" rows={5} name="content" value={content} onChange={handleChange} />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formGroupWdt">
+        <Form.Label>작성일</Form.Label>
+        <Form.Control type="text" name="wdt" value={wdt} readOnly />
       </Form.Group>
       <Row>
         <Button as={Col} variant="primary" type="button" onClick={handleSubmit}>

@@ -16,7 +16,7 @@ export default function BoardInfo() {
     if (window.confirm("삭제하시겠습니까?")) {
       const result = await axios.delete(`http://localhost/board/${boardNo}`);
       console.log(result, "삭제");
-      navigater("/");
+      navigater("/boardcomp");
     }
   };
   // boardNo가 변경되면 데이터 재요청
@@ -36,7 +36,7 @@ export default function BoardInfo() {
           <Card.Text>내용: {boardInfo.content}</Card.Text>
           <Card.Text>작성자: {boardInfo.writer}</Card.Text>
           <Button onClick={handleDelete}>삭제</Button>
-          <Link className="ms-1" to={`/update/${boardNo}`}>
+          <Link className="ms-1" to={`/boardcomp/update/${boardNo}`}>
             <Button>수정</Button>
           </Link>
         </Card.Body>

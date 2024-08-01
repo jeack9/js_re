@@ -1,4 +1,4 @@
-import { Routes, Route, NavLink, useParams } from "react-router-dom";
+import { Routes, Route, NavLink, useParams, useRoutes } from "react-router-dom";
 function Home() {
   return (
     <div>
@@ -28,6 +28,7 @@ function Topic() {
 }
 
 function Topics() {
+  let route = useRoutes([{ path: "/:topicId", element: <Topic /> }]);
   return (
     <div>
       <h2>Topics</h2>
@@ -40,9 +41,10 @@ function Topics() {
           );
         })}
       </ul>
-      <Routes>
+      {route}
+      {/* <Routes>
         <Route path={`/:topicId`} element={<Topic />}></Route>;
-      </Routes>
+      </Routes> */}
     </div>
   );
 }
@@ -56,6 +58,16 @@ function Contact() {
 }
 
 function App() {
+  let route = useRoutes([
+    { path: "/", element: <Home /> },
+    {
+      path: "/topics/*",
+      element: <Topics />,
+      // children: [{ path: `:topicId`, element: <Topic /> }],
+    },
+    { path: "/contact", element: <Contact /> },
+    { path: "/*", element: "404 err" },
+  ]);
   return (
     <div className="App">
       <h1>Hello react router DOM</h1>
@@ -73,12 +85,13 @@ function App() {
           <NavLink to={"/err"}>Error</NavLink>
         </li>
       </ul>
-      <Routes>
+      {route}
+      {/* <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/topics/*" element={<Topics />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/*" element="404"></Route>
-      </Routes>
+      </Routes> */}
     </div>
   );
 }

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import BoardInfo from "./BoardInfo";
+import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+
 export default function BoardList() {
   // 사용자목록 데이터 state
   const [list, setList] = useState([]);
@@ -26,7 +28,7 @@ export default function BoardList() {
   }, [page]);
   return (
     <div>
-      <NavLink to={"/board"}>
+      <NavLink to={"board"}>
         <h1>리스트</h1>
       </NavLink>
       <Table striped bordered hover>
@@ -45,9 +47,7 @@ export default function BoardList() {
               <tr key={board.board_no}>
                 <td>{board.board_no}</td>
                 <td>
-                  <NavLink to={`/board/${board.board_no}`}>
-                    {board.title}
-                  </NavLink>
+                  <NavLink to={`${board.board_no}`}>{board.title}</NavLink>
                 </td>
                 <td>{board.content}</td>
                 <td>{board.writer}</td>
@@ -57,30 +57,46 @@ export default function BoardList() {
           })}
         </tbody>
       </Table>
+      {/* <div>
+        {pageDTO.prev ? <Link to={`/boardcomp/board?page=${pageDTO.startPage - 1}`}>{"<<"}</Link> : null}
+        {Array.from({ length: pageDTO.endPage - pageDTO.startPage + 1 }, (v, i) => i + pageDTO.startPage).map(
+          (page) => {
+            return (
+              <Link key={page} to={`/boardcomp/board?page=${page}`} className={pageDTO.page == page ? "active" : null}>
+                {page}
+              </Link>
+            );
+          }
+        )}
+        {pageDTO.next ? <Link to={`/boardcomp/board?page=${pageDTO.endPage + 1}`}>{">>"}</Link> : null}
+      </div> */}
       <div>
-        {pageDTO.prev ? (
-          <Link to={`/board?page=${pageDTO.startPage - 1}`}>{"<<"}</Link>
-        ) : null}
-        {Array.from(
-          { length: pageDTO.endPage - pageDTO.startPage + 1 },
-          (v, i) => i + pageDTO.startPage
-        ).map((page) => {
-          return (
-            <Link
-              key={page}
-              to={`/board?page=${page}`}
-              className={pageDTO.page == page ? "active" : null}
-            >
-              {page}
-            </Link>
-          );
-        })}
-        {pageDTO.next ? (
-          <Link to={`/board?page=${pageDTO.endPage + 1}`}>{">>"}</Link>
-        ) : null}
+        <Pagination>
+          <PaginationItem>
+            {pageDTO.prev ? (
+              <PaginationLink tag={Link} previous to={`/boardcomp/board?page=${pageDTO.startPage - 1}`} />
+            ) : null}
+          </PaginationItem>
+          {Array.from({ length: pageDTO.endPage - pageDTO.startPage + 1 }, (v, i) => i + pageDTO.startPage).map(
+            (page) => {
+              return (
+                <PaginationItem key={page} active={pageDTO.page == page ? true : false}>
+                  <PaginationLink tag={Link} to={`/boardcomp/board?page=${page}`}>
+                    {page}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            }
+          )}
+          <PaginationItem>
+            {pageDTO.next ? (
+              <PaginationLink tag={Link} next to={`/boardcomp/board?page=${pageDTO.endPage + 1}`} />
+            ) : null}
+          </PaginationItem>
+        </Pagination>
       </div>
       <Routes>
-        <Route path="/:boardNo" element={<BoardInfo />}></Route>
+        <Route path=":boardNo" element={<BoardInfo />}></Route>
       </Routes>
     </div>
   );

@@ -30,7 +30,7 @@ export default function BoardInsert() {
     if (window.confirm("등록하시겠습니까?")) {
       const result = await axios.post(`http://localhost/board`, form);
       console.log("result", result);
-      navigater("/board");
+      navigater("board");
     }
   };
   return (

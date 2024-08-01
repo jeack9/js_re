@@ -4,7 +4,15 @@ const prodSql = require("./product_sql");
 const boardSql = require("./board_sql");
 const sql = { customer: customerSql, product: prodSql, board: boardSql };
 // mysql 접속 정보
-const conn = { host: "localhost", port: "3306", user: "hr", password: "hr", database: "shop", connectionLimit: 10 };
+const conn = {
+  host: "localhost",
+  port: "3306",
+  user: "hr",
+  password: "hr",
+  database: "shop",
+  connectionLimit: 10,
+  dateStrings: "date",
+};
 
 let pool = mysql.createPool(conn);
 

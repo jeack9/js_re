@@ -1,4 +1,6 @@
 import Replys from "./Replys";
+import { useContext } from "react";
+import { LoginContext } from "./context";
 
 function Item({ name, isPacked }) {
   return (
@@ -8,11 +10,17 @@ function Item({ name, isPacked }) {
   );
 }
 function Items({ todos }) {
+  const login = useContext(LoginContext);
   // return todos.map((todo) => {
   //   return <Item {...todo} />;
   // });
   const item = todos.map((todo, idx) => <Item {...todo} key={idx} />);
-  return <>{item}</>;
+  return (
+    <>
+      <h1>로그인 {login.userid}</h1>
+      {item}
+    </>
+  );
 }
 
 const replyList = [
@@ -21,6 +29,7 @@ const replyList = [
   { id: 3, title: "세번째", writer: "이기자" },
 ];
 export default function PackingList() {
+  const login = useContext(LoginContext);
   let todos = [
     { name: "Space suit", isPacked: true },
     { name: "Helmet with a golden leaf", isPacked: true },
@@ -29,9 +38,12 @@ export default function PackingList() {
   return (
     <section>
       <h1>Sally Ride's Packing List</h1>
-      <ul>
-        <Items todos={todos} />
-      </ul>
+      <h1>로그인 {login.userid}</h1>
+      <LoginContext.Provider value={{ userid: "김유신" }}>
+        <ul>
+          <Items todos={todos} />
+        </ul>
+      </LoginContext.Provider>
       <h2>댓글리스트</h2>
       <Replys datas={replyList} />
     </section>
